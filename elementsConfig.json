@@ -123,38 +123,5 @@
         "behaviours": {
             "TryToSmokeDark": true
         }
-    },
-    {
-        "value": 70,
-        "name": "grass",
-        "hexCode": "#FF69B4",
-        "shape": "rectangle",
-        "movable": true,
-        "behaviours": {
-            "TryToMoveParticleDown": true,
-            "TryToDisplacesWater": true
-        }
-    },
-    {
-        "value": 70,
-        "name": "grass",
-        "hexCode": "#00ff00",
-        "shape": "rectangle",
-        "movable": true,
-        "behaviours": {
-            "TryToMoveParticleDown": true,
-            "TryToDisplacesWater": true
-        }
-    },
-    {
-        "value": 70,
-        "name": "grass",
-        "hexCode": "#00ff00",
-        "shape": "rectangle",
-        "movable": true,
-        "behaviours": {
-            "TryToMoveParticleDown": true,
-            "TryToDisplacesWater": true
-        }
     }
 ]
