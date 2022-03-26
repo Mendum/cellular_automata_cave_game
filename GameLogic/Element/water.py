@@ -1,23 +1,19 @@
-from calendar import month_abbr
 from pprint import pprint
-from re import I
-from xml.dom.minidom import Entity
-import numpy as np
-from simulation.GameLogic.Element.element import Element, IsAir, IsRock, IsWater, IsWood
+from simulation.GameLogic.Element.element import IsAir, IsRock, IsWater, IsWood
 from simulation.GameLogic.Particle.particle import Particle, ParticleDirections
 from simulation.GameLogic.Particle.particle_utils import IsParticleFalling, ParticleCanMoveHorizontalIntoAir, ParticleCanMoveHorizontalIntoWater, RemoveEntity, TryToMoveParticleDown
 from simulation.board import Boards
 
-def Water(movable_entites: list[Particle], particle_directions: ParticleDirections, board: np.ndarray, entity: Particle) -> list[Particle]:
+#def Water(movable_entites: list[Particle], particle_directions: ParticleDirections, board: np.ndarray, entity: Particle) -> list[Particle]:
     
-    movable_entites = TryToMoveParticleDown(movable_entites, particle_directions, entity)
-    movable_entites = TryToCombineWater(movable_entites, particle_directions, entity, board)
-    movable_entites = TryToOverflowWater(movable_entites, particle_directions, entity)
-    movable_entites = TryToDisplacesWood(movable_entites, particle_directions, entity, board)
-    movable_entites = TryToSpillWaterIntoAir(movable_entites, particle_directions, entity, board)
-    movable_entites = TryToSpillWaterIntoWater(movable_entites, particle_directions, entity, board)
+#    movable_entites = TryToMoveParticleDown(movable_entites, particle_directions, entity)
+#    movable_entites = TryToCombineWater(movable_entites, particle_directions, entity, board)
+#    movable_entites = TryToOverflowWater(movable_entites, particle_directions, entity)
+#    movable_entites = TryToDisplacesWood(movable_entites, particle_directions, entity, board)
+#    movable_entites = TryToSpillWaterIntoAir(movable_entites, particle_directions, entity, board)
+#    movable_entites = TryToSpillWaterIntoWater(movable_entites, particle_directions, entity, board)
     
-    return movable_entites
+#    return movable_entites
 
 def CanDisplacesWater(particle_directions: ParticleDirections) -> bool:
     water_can_be_displaced: bool = IsWater(particle_directions.vertical_down.value)
@@ -32,7 +28,7 @@ def CanDisplacesWood(particle_directions: ParticleDirections) -> bool:
 def TryToOverflowWater(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle) -> list[Particle]:
     if CanWaterOverflow(particle_directions):
         print('naredim novo vodo')
-        movable_entites.append(Particle(entity.x-1, entity.y, Element.water.value, -1))
+        movable_entites.append(Particle(entity.x-1, entity.y, 20, -1))
     
     return movable_entites
 
@@ -186,7 +182,7 @@ def WaterSpillIntoWater(particle_directions: ParticleDirections) -> list[Particl
     return []
 
 def GetWaterLevel(value: float) -> float:
-    return (value - Element.water.value)
+    return (value - 20)
 
 def SetWaterLevel(current_value:float, spill_value: float) -> float:
     new_value: float = (current_value - spill_value)
@@ -199,7 +195,7 @@ def CanWaterCombine(particle_directions: ParticleDirections) -> bool:
     is_water_below: bool = IsWater(particle_directions.vertical_down.value)
     water_below_value: float = particle_directions.vertical_down.value
 
-    return is_water_below and Element.water.value <= water_below_value # < 22)
+    return is_water_below and 20 <= water_below_value # < 22)
 
 def CanWaterOverflow(particle_directions: ParticleDirections) -> bool:
     #is_water_below: bool = IsWater(particle_directions.current.value)

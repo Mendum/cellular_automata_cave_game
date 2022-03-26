@@ -51,7 +51,7 @@ class MainWindow(Frame):
     def play_game(self):
         #self.game_board = self.generateMap()
         #saveToFile(self.game_board
-        self.AddNewElement(self, 70, "grass", "#007700", "rectangle", {"TryToMoveParticleDown" : True})
+        #self.AddNewElement(self, 70, "grass", "#007700", "rectangle", True, {"TryToMoveParticleDown" : True})
         element_data = self.LoadJsonFile()
         game_board = readFromFile()
 
@@ -112,7 +112,7 @@ class MainWindow(Frame):
             data = json.load(f)
             return data
     
-    def AddNewElement(self, value, name, hexCode, shape, selected_behaviours : list[str, bool]):
+    def AddNewElement(self, value, name, hexCode, shape, movable, selected_behaviours : list[str, bool]):
                 
         behaviours = {}
         for behaviour in selected_behaviours:
@@ -123,6 +123,7 @@ class MainWindow(Frame):
                 "name" : name,
                 "hexCode" : hexCode,
                 "shape" : shape,
+                "movable" : movable,
                 "behaviour" : behaviours
             }
 

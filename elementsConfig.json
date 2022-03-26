@@ -4,78 +4,124 @@
         "name" : "air",
         "hexCode" : "#323232",
         "shape" : "rectangle",
-        "behaviour" : {}
+        "movable" : false,
+        "behaviours" : {}
     },
     { 
         "value" : 1,
         "name" : "rock",
         "hexCode" : "#000000",
         "shape" : "rectangle",
-        "behaviour" : {}
+        "movable" : false,
+        "behaviours" : {}
     },
     { 
         "value" : 20,
         "name" : "water",
         "hexCode" : "#66D3FA",
         "shape" : "oval",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "TryToMoveParticleDown" : true,
+            "TryToCombineWater" : true,
+            "TryToOverflowWater" : true,
+            "TryToDisplacesWood" : true,
+            "TryToSpillWaterIntoAir" : true,
+            "TryToSpillWaterIntoWater" : true
+        }
     },
     { 
         "value" : 21,
         "name" : "water",
         "hexCode" : "#3C99DC",
         "shape" : "oval",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "TryToMoveParticleDown" : true,
+            "TryToCombineWater" : true,
+            "TryToOverflowWater" : true,
+            "TryToDisplacesWood" : true,
+            "TryToSpillWaterIntoAir" : true,
+            "TryToSpillWaterIntoWater" : true
+        }
     },
     { 
         "value" : 22,
         "name" : "water",
         "hexCode" : "#2565AE",
         "shape" : "oval",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "TryToMoveParticleDown" : true,
+            "TryToCombineWater" : true,
+            "TryToOverflowWater" : true,
+            "TryToDisplacesWood" : true,
+            "TryToSpillWaterIntoAir" : true,
+            "TryToSpillWaterIntoWater" : true
+        }
     },
     { 
         "value" : 30,
         "name" : "sand",
         "hexCode" : "#eee1ac",
         "shape" : "rectangle",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "TryToMoveParticleDown" : true,
+            "TryToDisplacesWater" : true,
+            "TryToMoveParticleDiagonal" : true
+        }
     },
     { 
         "value" : 40,
         "name" : "wood",
         "hexCode" : "#a5704d",
         "shape" : "rectangle",
-        "behaviour" : {
+        "movable" : true,
+        "behaviours" : {
             "TryToMoveParticleDown" : true
         }
     },
     { 
-        "value" : 40,
+        "value" : 41,
         "name" : "woodBurned",
         "hexCode" : "#462a26",
         "shape" : "rectangle",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "RemoveEntity" : true
+        }
     },
     { 
         "value" : 50,
         "name" : "fire",
         "hexCode" : "#fe632b",
         "shape" : "oval",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "TryToMoveParticleDown" : true,
+            "TryToExtinguishFire" : true,
+            "TryToSpreadFire" : true
+        }
     },
     { 
         "value" : 60,
         "name" : "smokeLight",
         "hexCode" : "#9c9391",
         "shape" : "oval",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "RemoveEntity" : true
+        }
     },
     { 
         "value" : 61,
         "name" : "smokeDark",
         "hexCode" : "#726867",
         "shape" : "oval",
-        "behaviour" : {}
+        "movable" : true,
+        "behaviours" : {
+            "TryToSmokeDark" : true
+        }
     }
 ]

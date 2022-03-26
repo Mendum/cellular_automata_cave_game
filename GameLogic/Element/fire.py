@@ -1,16 +1,8 @@
+from pprint import pprint
 import numpy as np
 from simulation.GameLogic.Element.element import Element, IsFire, IsRock, IsSand, IsWater, IsWood
 from simulation.GameLogic.Particle.particle import Particle, ParticleDirections
-from simulation.GameLogic.Particle.particle_utils import GetParticleValue, RemoveEntity, TryToMoveParticleDown
-
-
-def Fire(movable_entites: list[Particle], particle_directions: ParticleDirections, board: np.ndarray, entity: Particle) -> list[Particle]:
-    
-    movable_entites = TryToMoveParticleDown(movable_entites, particle_directions, entity)
-    movable_entites = TryToExtinguishFire(board, movable_entites, particle_directions)
-    movable_entites = TryToSpreadFire(movable_entites, particle_directions, entity)
-    
-    return movable_entites
+from simulation.GameLogic.Particle.particle_utils import GetParticleValue, RemoveEntity
 
 def CanFireSpread(particle_directions: ParticleDirections) -> bool:
     wood_is_below: bool = IsWood(particle_directions.vertical_down.value)
@@ -55,6 +47,9 @@ def CanFireBeExtinguish(particle_directions: ParticleDirections) -> bool:
     rock_is_below: bool = IsRock(particle_directions.vertical_down.value)
     water_is_below: bool = IsWater(particle_directions.vertical_down.value)
     sand_is_below: bool = IsSand(particle_directions.vertical_down.value)
+    print(f'rock_is_below', rock_is_below)
+    print(f'water_is_below', water_is_below)
+    print(f'sand_is_below', sand_is_below)
 
     return (rock_is_below or water_is_below or sand_is_below)
 
@@ -64,9 +59,12 @@ def FireExtinguish(boards: np.ndarray, movable_entites: list[Particle], particle
         return (particle_directions.current.x == particle.x and particle_directions.current.y == particle.y)
 
     def ChangeEntitesValue(particle: Particle):
+        print('curi')
         particle_value = GetParticleValue(boards, particle_directions.vertical_down.x, particle_directions.vertical_down.y)
         if GenerateSmokeParticle(particle):
+            print('muri')
             if IsRock(particle_value) or IsWater(particle_value) or IsSand(particle_value) or IsFire(particle_value):
+                print('v afriki')
                 return Particle(particle.x, particle.y, Element.smoke_light.value, -1)
             else:
                 return particle
@@ -75,9 +73,12 @@ def FireExtinguish(boards: np.ndarray, movable_entites: list[Particle], particle
 
     return list(map(ChangeEntitesValue, movable_entites))
 
-def TryToExtinguishFire(board: np.ndarray, movable_entites: list[Particle], particle_directions: ParticleDirections) -> list[Particle]:
+def TryToExtinguishFire(board: np.ndarray, movable_entites: list[Particle], entity: Particle, particle_directions: ParticleDirections) -> list[Particle]:
     if CanFireBeExtinguish(particle_directions):
+        print('filip')
         temp_temp = FireExtinguish(board, movable_entites, particle_directions)
+        movable_entites = RemoveEntity(movable_entites, entity)
         movable_entites.extend(temp_temp)
     
+    pprint(movable_entites)
     return movable_entites

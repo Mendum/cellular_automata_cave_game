@@ -2,11 +2,6 @@ from enum import Enum
 import json
 from GameLogic.Particle.particle import Particle
 
-def LoadJsonFile(self):
-    with open('elementsConfig.json') as f:
-        data = json.load(f)
-        return data
-
 class Element(Enum):
     air = 0
     rock = 1
@@ -18,11 +13,32 @@ class Element(Enum):
     smoke_light = 60
     smoke_dark = 61
 
+def LoadJsonFile():
+    with open('elementsConfig.json') as f:
+        data = json.load(f)
+        return data
+
+json_elements = LoadJsonFile()
+
+def FindRockInJson(json_elements):
+    for element in json_elements:
+        if element['name'] == "rock":
+            return element
+
+def FindAirInJson(json_elements):
+    for element in json_elements:
+        if element['name'] == "air":
+            return element
+
 def IsAir(value: float) -> bool:
     return (value == Element.air.value)
+    #rock_element = FindRockInJson(json_elements)
+    #return rock_element['value'] == value
 
 def IsRock(value: float) -> bool:
     return (value == Element.rock.value)
+    #rock_element = FindAirInJson(json_elements)
+    #return rock_element['value'] == value
 
 def IsWater(value: float) -> bool:
     return (value >= 20 and value <= 22)
@@ -44,6 +60,3 @@ def IsSmokeLight(value: float) -> bool:
 
 def IsSmokeDark(value: float) -> bool:
     return (value == Element.smoke_dark.value)
-
-def IsGrass(value: float) -> bool:
-    return (value == Element.grass.value)
