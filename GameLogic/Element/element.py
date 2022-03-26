@@ -1,6 +1,5 @@
 from enum import Enum
 import json
-from GameLogic.Particle.particle import Particle
 
 class Element(Enum):
     air = 0

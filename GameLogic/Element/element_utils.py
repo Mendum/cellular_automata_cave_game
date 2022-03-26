@@ -2,7 +2,6 @@ import numpy as np
 from GameLogic.Particle.particle import Particle
 from GameLogic.Particle.particle_utils import GetParticleValue
 from simulation.GameLogic.Element.element import LoadJsonFile
-from simulation.GameLogic.Particle.particle_utils import GetParticleDirection
 
 def GetAllMovableEntities(board: np.ndarray) -> list[Particle]:
 

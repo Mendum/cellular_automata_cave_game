@@ -1,3 +1,4 @@
+from pprint import pprint
 from xml.dom.minidom import Element
 import numpy as np
 from time import sleep
@@ -51,7 +52,7 @@ class MainWindow(Frame):
     def play_game(self):
         #self.game_board = self.generateMap()
         #saveToFile(self.game_board
-        #self.AddNewElement(self, 70, "grass", "#007700", "rectangle", True, {"TryToMoveParticleDown" : True})
+        self.AddNewElement(70, "grass", "#00ff00", "rectangle", True, {"TryToMoveParticleDown" : True, "TryToDisplacesWater" : True})
         element_data = self.LoadJsonFile()
         game_board = readFromFile()
 
@@ -112,25 +113,25 @@ class MainWindow(Frame):
             data = json.load(f)
             return data
     
-    def AddNewElement(self, value, name, hexCode, shape, movable, selected_behaviours : list[str, bool]):
+    def AddNewElement(self, value: float, name: str, hexCode: str, shape: str, movable: bool, selected_behaviours : dict[str, bool]):
                 
-        behaviours = {}
+        new_behaviours: dict[str, bool] = {}
         for behaviour in selected_behaviours:
-            behaviours.append(behaviour)
-        
+            new_behaviours[behaviour] = selected_behaviours[behaviour]
+
         temp_element = { 
                 "value" : value,
                 "name" : name,
                 "hexCode" : hexCode,
                 "shape" : shape,
                 "movable" : movable,
-                "behaviour" : behaviours
+                "behaviours" : new_behaviours
             }
 
         json_data = list(self.LoadJsonFile())
         json_data.append(temp_element)
-        json.dump(json_data, "elementsConfig.json")
-        
+        with open ('elementsConfig.json', 'w') as f:
+            json.dump(json_data, f, indent=4)
 
 def main(): 
     root = Tk()

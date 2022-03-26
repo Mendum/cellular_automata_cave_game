@@ -1,7 +1,7 @@
 from pprint import pprint
 from simulation.GameLogic.Element.element import IsAir, IsRock, IsWater, IsWood
 from simulation.GameLogic.Particle.particle import Particle, ParticleDirections
-from simulation.GameLogic.Particle.particle_utils import IsParticleFalling, ParticleCanMoveHorizontalIntoAir, ParticleCanMoveHorizontalIntoWater, RemoveEntity, TryToMoveParticleDown
+from simulation.GameLogic.Particle.particle_utils import IsParticleFalling, ParticleCanMoveHorizontalIntoAir, ParticleCanMoveHorizontalIntoWater, RemoveEntity
 from simulation.board import Boards
 
 #def Water(movable_entites: list[Particle], particle_directions: ParticleDirections, board: np.ndarray, entity: Particle) -> list[Particle]:
@@ -25,39 +25,44 @@ def CanDisplacesWood(particle_directions: ParticleDirections) -> bool:
 
     return wood_can_be_displaced
 
-def TryToOverflowWater(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle) -> list[Particle]:
+def TryToOverflowWater(movable_entites: list[Particle], particle_directions: ParticleDirections, board: Boards) -> list[Particle]:
+    entity = particle_directions.current
     if CanWaterOverflow(particle_directions):
         print('naredim novo vodo')
         movable_entites.append(Particle(entity.x-1, entity.y, 20, -1))
     
     return movable_entites
 
-def TryToCombineWater(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle, board: Boards) -> list[Particle]:
-    if CanWaterCombine(particle_directions) and not IsParticleFalling(board, entity):
+def TryToCombineWater(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards) -> list[Particle]:
+    entity = particle_directions.current
+    if CanWaterCombine(particle_directions) and not IsParticleFalling(boards, entity):
         movable_entites = RemoveEntity(movable_entites, entity)
         movable_entites.append(Particle(entity.x+1, entity.y, particle_directions.vertical_down.value + 1, -1))
     
     return movable_entites
 
 #movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle
-def TryToDisplacesWater(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle, board: Boards) -> list[Particle]:
-    if CanDisplacesWater(particle_directions) and not IsParticleFalling(board, entity):
+def TryToDisplacesWater(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards) -> list[Particle]:
+    entity = particle_directions.current
+    if CanDisplacesWater(particle_directions) and not IsParticleFalling(boards, entity):
         movable_entites = RemoveEntity(movable_entites, entity)
         movable_entites.append(Particle(entity.x, entity.y, particle_directions.vertical_down.value, -1))
         movable_entites.append(Particle(entity.x+1, entity.y, entity.value, -1))
     
     return movable_entites
 
-def TryToDisplacesWood(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle, board: Boards) -> list[Particle]:
-    if CanDisplacesWood(particle_directions) and not IsParticleFalling(board, entity):
+def TryToDisplacesWood(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards) -> list[Particle]:
+    entity = particle_directions.current
+    if CanDisplacesWood(particle_directions) and not IsParticleFalling(boards, entity):
         movable_entites = RemoveEntity(movable_entites, entity)
         movable_entites.append(Particle(entity.x, entity.y, particle_directions.vertical_down.value, -1))
         movable_entites.append(Particle(entity.x+1, entity.y, entity.value, -1))
 
     return movable_entites
 
-def TryToSpillWaterIntoAir(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle, board: Boards) -> list[Particle]:
-    if CanWaterSpill(particle_directions) and ParticleCanMoveHorizontalIntoAir(particle_directions) and not IsParticleFalling(board, entity):
+def TryToSpillWaterIntoAir(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards) -> list[Particle]:
+    entity = particle_directions.current
+    if CanWaterSpill(particle_directions) and ParticleCanMoveHorizontalIntoAir(particle_directions) and not IsParticleFalling(boards, entity):
         test = entity
         #pprint(movable_entites)
         temp_temp = WaterSpillIntoAir(particle_directions)
@@ -70,8 +75,9 @@ def TryToSpillWaterIntoAir(movable_entites: list[Particle], particle_directions:
     
     return movable_entites
 
-def TryToSpillWaterIntoWater(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle, board: Boards) -> list[Particle]:
-    if CanWaterSpill(particle_directions) and ParticleCanMoveHorizontalIntoWater(particle_directions) and not IsParticleFalling(board, entity):
+def TryToSpillWaterIntoWater(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards) -> list[Particle]:
+    entity = particle_directions.current
+    if CanWaterSpill(particle_directions) and ParticleCanMoveHorizontalIntoWater(particle_directions) and not IsParticleFalling(boards, entity):
         test = entity
 
         pprint(f'1 :')
@@ -147,7 +153,7 @@ def WaterSpillIntoAir(particle_directions: ParticleDirections) -> list[Particle]
 
 def WaterSpillIntoWater(particle_directions: ParticleDirections) -> list[Particle]:
     water_level: float = GetWaterLevel(particle_directions.current.value)
-    spill_curr: Particle = particle_directions.current
+    #spill_curr: Particle = particle_directions.current
 
     spill_left: Particle = particle_directions.horizontal_left
     can_combine_left: bool = IsWater(particle_directions.horizontal_left.value)

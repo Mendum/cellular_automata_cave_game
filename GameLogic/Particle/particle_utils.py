@@ -3,6 +3,7 @@ import random
 from GameLogic.Element.element import IsWater
 from GameLogic.Particle.particle import Particle, ParticleDirections
 from GameLogic.Element.element import IsRock, IsAir
+from simulation.board import Boards
 
 def GetParticle(boards: np.ndarray, x: int, y: int) -> Particle:
     return Particle(x, y, GetParticleValue(boards, x, y), -1)
@@ -26,7 +27,8 @@ def SetParticlesDirections(boards: np.ndarray, x: int, y: int) -> ParticleDirect
         GetParticle(boards, x-1, y+1)
     )
 
-def IsParticleFalling(board: np.ndarray, particle: Particle) -> bool:
+def IsParticleFalling(boards: Boards, particle: Particle) -> bool:
+    board = boards.old_board
     x = particle.x
     y = particle.y
 
@@ -37,15 +39,16 @@ def IsParticleFalling(board: np.ndarray, particle: Particle) -> bool:
     
     return False
 
-def RemoveEntity(movable_entites: list[Particle], particle: Particle) -> list[Particle]:
-    return list(filter(lambda entity: not (entity.x == particle.x and entity.y == particle.y), movable_entites))
+def RemoveEntity(movable_entites: list[Particle], entity: Particle) -> list[Particle]:
+    return list(filter(lambda particle: not (particle.x == entity.x and particle.y == entity.y), movable_entites))
 
 def ParticleCanMoveDown(particle_directions: ParticleDirections) -> bool:
     can_go_down: bool = IsAir(particle_directions.vertical_down.value)
 
     return can_go_down
 
-def TryToMoveParticleDown(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle) -> list[Particle]:
+def TryToMoveParticleDown(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards) -> list[Particle]:
+    entity = particle_directions.current
     if ParticleCanMoveDown(particle_directions):
         movable_entites = RemoveEntity(movable_entites, entity)
         movable_entites.append(Particle(entity.x+1, entity.y, entity.value, -1))
@@ -77,7 +80,7 @@ def ParticleCanMoveDiagonal(particle_directions: ParticleDirections) -> bool:
 
     return (can_go_left or can_go_right)
 
-def ParticleMoveDiagonal(particle_directions) -> Particle:
+def ParticleMoveDiagonal(particle_directions: ParticleDirections) -> Particle:
     current: Particle = particle_directions.current
     left: Particle = particle_directions.diagonal_down_left
     right: Particle = particle_directions.diagonal_down_right
@@ -85,8 +88,9 @@ def ParticleMoveDiagonal(particle_directions) -> Particle:
 
     return GenerateParticleDirectionDiagonal(left, right, current)
 
-def TryToMoveParticleDiagonal(movable_entites: list[Particle], particle_directions: ParticleDirections, entity: Particle, board: np.ndarray)  -> list[Particle]:
-    if ParticleCanMoveDiagonal(particle_directions) and not IsParticleFalling(board, entity):
+def TryToMoveParticleDiagonal(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards)  -> list[Particle]:
+    entity = particle_directions.current
+    if ParticleCanMoveDiagonal(particle_directions) and not IsParticleFalling(boards, entity):
         movable_entites = RemoveEntity(movable_entites, entity)
         move_to = ParticleMoveDiagonal(particle_directions)
         movable_entites.append(Particle(move_to.x, move_to.y, entity.value, -1))
