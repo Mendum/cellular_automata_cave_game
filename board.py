@@ -7,7 +7,7 @@ import os
 @dataclass
 class Boards:
     old_board : np.ndarray
-    temp_board : np.ndarray
+    flow_direction_board : np.ndarray
 
 def generateBoard(change_of_surviving: float) -> np.ndarray:
     board = random.rand(100, 100).round(2)
@@ -21,6 +21,9 @@ def generateBoard(change_of_surviving: float) -> np.ndarray:
 
 def GenerateTempBoard() -> np.ndarray:
     return np.zeros((100, 100))
+
+def GenerateFlowDirectionBoard() -> np.ndarray:
+    return np.full_like(GenerateTempBoard(), -1, dtype=np.double)
 
 def saveToFile(map):
     np.savetxt('text.txt', map, fmt='%s')

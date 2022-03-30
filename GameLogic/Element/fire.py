@@ -19,15 +19,15 @@ def FireSpread(particle_directions: ParticleDirections) -> list[Particle]:
 
     if wood_is_on_left and wood_is_on_right:
         return [
-            Particle(fire_source.x, fire_source.y+1, Element.fire.value, -1),
-            Particle(fire_source.x, fire_source.y-1, Element.fire.value, -1)
+            Particle(fire_source.x, fire_source.y+1, Element.fire.value, 0),
+            Particle(fire_source.x, fire_source.y-1, Element.fire.value, 0)
             ]
 
     elif wood_is_on_left:
-        return [ Particle(fire_source.x, fire_source.y-1, Element.fire.value, -1)]
+        return [ Particle(fire_source.x, fire_source.y-1, Element.fire.value, 0)]
 
     elif wood_is_on_right:
-        return [Particle(fire_source.x, fire_source.y+1, Element.fire.value, -1)]
+        return [Particle(fire_source.x, fire_source.y+1, Element.fire.value, 0)]
 
     return []
 
@@ -39,8 +39,8 @@ def TryToSpreadFire(movable_entites: list[Particle], particle_directions: Partic
         #temp_movable_entites = FireSpread(particle_directions)
         temp_temp = FireSpread(particle_directions)
         movable_entites.extend(temp_temp)
-        movable_entites.append(Particle(entity.x, entity.y, Element.smoke_dark.value, -1))
-        movable_entites.append(Particle(entity.x+1, entity.y, Element.wood_burned.value, -1))
+        movable_entites.append(Particle(entity.x, entity.y, Element.smoke_dark.value, 0))
+        movable_entites.append(Particle(entity.x+1, entity.y, Element.wood_burned.value, 0))
     
     return movable_entites
 
@@ -66,7 +66,7 @@ def FireExtinguish(movable_entites: list[Particle], particle_directions: Particl
             print('muri')
             if IsRock(particle_value) or IsWater(particle_value) or IsSand(particle_value) or IsFire(particle_value):
                 print('v afriki')
-                return Particle(particle.x, particle.y, Element.smoke_light.value, -1)
+                return Particle(particle.x, particle.y, Element.smoke_light.value, 0)
             else:
                 return particle
         else:

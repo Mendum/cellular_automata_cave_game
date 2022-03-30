@@ -3,6 +3,7 @@
         "value": 0,
         "name": "air",
         "hexCode": "#323232",
+        "hexOutline": "#454545",
         "shape": "rectangle",
         "movable": false,
         "behaviours": {}
@@ -11,6 +12,7 @@
         "value": 1,
         "name": "rock",
         "hexCode": "#000000",
+        "hexOutline": "#ccc",
         "shape": "rectangle",
         "movable": false,
         "behaviours": {}
@@ -19,6 +21,7 @@
         "value": 20,
         "name": "water",
         "hexCode": "#66D3FA",
+        "hexOutline": "#66D3FA",
         "shape": "oval",
         "movable": true,
         "behaviours": {
@@ -34,6 +37,7 @@
         "value": 21,
         "name": "water",
         "hexCode": "#3C99DC",
+        "hexOutline": "#3C99DC",
         "shape": "oval",
         "movable": true,
         "behaviours": {
@@ -49,6 +53,7 @@
         "value": 22,
         "name": "water",
         "hexCode": "#2565AE",
+        "hexOutline": "#2565AE",
         "shape": "oval",
         "movable": true,
         "behaviours": {
@@ -64,6 +69,7 @@
         "value": 30,
         "name": "sand",
         "hexCode": "#eee1ac",
+        "hexOutline": "#eee1ac",
         "shape": "rectangle",
         "movable": true,
         "behaviours": {
@@ -76,6 +82,7 @@
         "value": 40,
         "name": "wood",
         "hexCode": "#a5704d",
+        "hexOutline": "#a5704d",
         "shape": "rectangle",
         "movable": true,
         "behaviours": {
@@ -86,6 +93,7 @@
         "value": 41,
         "name": "woodBurned",
         "hexCode": "#462a26",
+        "hexOutline": "#462a26",
         "shape": "rectangle",
         "movable": true,
         "behaviours": {
@@ -96,6 +104,7 @@
         "value": 50,
         "name": "fire",
         "hexCode": "#fe632b",
+        "hexOutline": "#fe632b",
         "shape": "oval",
         "movable": true,
         "behaviours": {
@@ -108,6 +117,7 @@
         "value": 60,
         "name": "smokeLight",
         "hexCode": "#9c9391",
+        "hexOutline": "#9c9391",
         "shape": "oval",
         "movable": true,
         "behaviours": {
@@ -118,10 +128,32 @@
         "value": 61,
         "name": "smokeDark",
         "hexCode": "#726867",
+        "hexOutline": "#726867",
         "shape": "oval",
         "movable": true,
         "behaviours": {
             "TryToSmokeDark": true
         }
+    },
+    {
+        "value": 70,
+        "name": "snow",
+        "hexCode": "#ffffff",
+        "hexOutline": "#ffffff",
+        "shape": "oval",
+        "movable": true,
+        "behaviours": {
+            "TryToMoveParticleDown": true,
+            "TryToMoveParticleDiagonal": true
+        }
+    },
+    {
+        "value": 70,
+        "name": "snow",
+        "hexCode": "#ffffff",
+        "hexOutline": "#ffffff",
+        "shape": "oval",
+        "movable": true,
+        "behaviours": {}
     }
 ]

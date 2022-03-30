@@ -10,5 +10,5 @@ def TryToSmokeLight(movable_entites: list[Particle], particle_directions: Partic
 def TryToSmokeDark(movable_entites: list[Particle], particle_directions: ParticleDirections, boards: Boards) -> list[Particle]:
     entity = particle_directions.current
     movable_entites = RemoveEntity(movable_entites, entity)
-    movable_entites.append(Particle(entity.x, entity.y, Element.smoke_light.value, -1))
+    movable_entites.append(Particle(entity.x, entity.y, Element.smoke_light.value, 0))
     return movable_entites
