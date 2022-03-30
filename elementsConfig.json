@@ -142,18 +142,6 @@
         "hexOutline": "#ffffff",
         "shape": "oval",
         "movable": true,
-        "behaviours": {
-            "TryToMoveParticleDown": true,
-            "TryToMoveParticleDiagonal": true
-        }
-    },
-    {
-        "value": 70,
-        "name": "snow",
-        "hexCode": "#ffffff",
-        "hexOutline": "#ffffff",
-        "shape": "oval",
-        "movable": true,
         "behaviours": {}
     }
 ]

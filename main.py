@@ -1,6 +1,8 @@
+from enum import Flag
+from GameLogic.Element.element import IsAir, IsRock
 import numpy as np
 from time import sleep
-from tkinter import Canvas, Checkbutton, Entry, IntVar, Label, OptionMenu, StringVar, Tk, Frame, Button, NORMAL, messagebox
+from tkinter import E, Canvas, Checkbutton, Entry, IntVar, Label, OptionMenu, StringVar, Tk, Frame, Button, NORMAL, messagebox
 from board import generateBoard, readFromFile
 from GameLogic.game import Play
 from simulation.board import Boards, GenerateFlowDirectionBoard, GenerateTempBoard, saveToFile
@@ -59,6 +61,7 @@ class MainWindow(Frame):
         self.btn_start.grid(row=0, column=0, sticky="")
 
         self.options = self.GetElementOptions()
+        print(self.options)
         self.drop_menu_selected = StringVar()
         self.drop_menu_selected.set("Elementi")
         self.drop_menu = OptionMenu(top_frame, self.drop_menu_selected, *self.options)
@@ -138,18 +141,18 @@ class MainWindow(Frame):
         col = int(array_y * 6)
         row = int(array_x * 6)
         t_size = 6.0
-        # TODO: Check if isNotRock
-        self.game_setting.boards.old_board[array_y, array_x] = element_value
-        self.canvas.create_rectangle(row, col, row + t_size, col + t_size, fill=element_hex_code, outline=element_hex_outtline)
+        if not IsRock(self.game_setting.boards.old_board[array_y, array_x]):
+            self.game_setting.boards.old_board[array_y, array_x] = element_value
+            self.canvas.create_rectangle(row, col, row + t_size, col + t_size, fill=element_hex_code, outline=element_hex_outtline)
+        else:
+            messagebox.showinfo('callback', 'Sorry you cant \n draw over rocks.')
 
     def motion(self, event):
         col_width = self.canvas.winfo_width()
         row_height = self.canvas.winfo_height()
         array_x = int( (event.x % col_width) / 6 )
         array_y = int( (event.y % row_height) / 6 )
-        col = int(event.x % col_width)
-        row = int(event.y % row_height)
-        self.canvas.coords(self.cursor_positon, col - 3, row - 3, col + 3, row + 3)
+        self.canvas.coords(self.cursor_positon, (array_x * 6), (array_y * 6), (array_x * 6) + 6, (array_y * 6) + 6)
         self.cursor_position_label.config(text=f'Mouse Cursor Position -> x: {array_x}, y: {array_y}')
         
     def PlayGame(self):
@@ -223,13 +226,6 @@ class MainWindow(Frame):
                 x = i * t_size
                 y = j * t_size
 
-                #if(curr_element == 22.0):
-                #    print(f'x: {x}')
-                #    print(f'y: {y}')
-                #    print(f'x + t_size: {x + t_size}')
-                #    print(f'y + t_size: {y + t_size}')
-                #    print(f't_size : {t_size}')
-
                 for element in element_data:
                     if curr_element == element['value']:
                         if(element['shape'] == 'rectangle' ):
@@ -262,9 +258,6 @@ class MainWindow(Frame):
         try:
             element_value = self.GetElementValue(self.drop_menu_selected.get())
             return element_value
-            #data = self.generate_cellular_automaton(arr, 100, pattern)
-            #self.canvas.delete("all")
-            #self.draw(data)
         except ValueError:
             messagebox.showinfo('DrawSelectedElement', 'Please select an element \n you would like to draw.')
                 
@@ -310,13 +303,21 @@ class MainWindow(Frame):
                 }
 
             json_data = list(self.LoadJsonFile())
-            json_data.append(temp_element)
-            # TODO: preveri ali element ze obstaja
-            #pprint(json_data)
-            with open ('elementsConfig.json', 'w') as f:
-                json.dump(json_data, f, indent=4)
+            elemet_not_exists = True
+            for data in json_data:
+                if data['name'] == temp_element['name'] or data['value'] == temp_element['value']:
+                    elemet_not_exists = False
+                    messagebox.showinfo('AddNewElement', 'Element with this \n value or name alredy exsits.')
+                else:
+                    print('ne obstaja')
 
-            print(f'Added new element: {temp_element["name"]}')
+            print(elemet_not_exists)
+            if elemet_not_exists:
+                json_data.append(temp_element)
+                with open ('elementsConfig.json', 'w') as f:
+                    json.dump(json_data, f, indent=4)
+
+                    messagebox.showinfo('AddNewElement', 'Element ' + temp_element['name'] + ' added')
         
         except ValueError:
             messagebox.showinfo("AddNewElement", "Napaka pri  \n dodajanu elementa")
